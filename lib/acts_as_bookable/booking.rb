@@ -17,7 +17,7 @@ module ActsAsBookable
     # Retrieves overlapped bookings, given a bookable and some booking options
     #
     scope :overlapped, ->(bookable,opts) {
-      query = where(bookable_id: bookable.id)
+      query = where(bookable_id: bookable.id, cancelled_at: nil)
 
       # Time options
       if(opts[:time].present?)
