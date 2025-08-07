@@ -20,33 +20,33 @@ module ActsAsBookable
 
     # Make a model bookable
     def bookable(**opts)
-
-      if bookable?
-        self.booking_opts = opts
-      else
+      unless respond_to?(:booking_opts)
         class_attribute :booking_opts
-        self.booking_opts = opts
+      end
 
-        class_eval do
-          serialize :schedule, IceCube::Schedule
+      self.booking_opts = opts
 
-          has_many :bookings, as: :bookable, dependent: :destroy, class_name: '::ActsAsBookable::Booking'
+      return if bookable? # already configured
 
-          validates_presence_of :schedule, if: :schedule_required?
-          validates_presence_of :capacity, if: :capacity_required?
-          validates_numericality_of :capacity, if: :capacity_required?, only_integer: true, greater_than_or_equal_to: 0
+      class_eval do
+        serialize :schedule, IceCube::Schedule
 
-          def self.bookable?
-            true
-          end
+        has_many :bookings, as: :bookable, dependent: :destroy, class_name: '::ActsAsBookable::Booking'
 
-          def schedule_required?
-            self.booking_opts && self.booking_opts && self.booking_opts[:time_type] != :none
-          end
+        validates_presence_of :schedule, if: :schedule_required?
+        validates_presence_of :capacity, if: :capacity_required?
+        validates_numericality_of :capacity, if: :capacity_required?, only_integer: true, greater_than_or_equal_to: 0
 
-          def capacity_required?
-            self.booking_opts && self.booking_opts[:capacity_type] != :none
-          end
+        def self.bookable?
+          true
+        end
+
+        def schedule_required?
+          booking_opts && booking_opts[:time_type] != :none
+        end
+
+        def capacity_required?
+          booking_opts && booking_opts[:capacity_type] != :none
         end
       end
 
