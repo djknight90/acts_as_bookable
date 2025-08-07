@@ -21,7 +21,7 @@ module ActsAsBookable::Bookable
       #
       # @raise ActsAsBookable::OptionsInvalid if options are not valid
       #
-      def validate_booking_options!(options)
+      def validate_booking_options!(**options)
         unpermitted_params = []
         required_params = {}
 
@@ -161,7 +161,7 @@ module ActsAsBookable::Bookable
       #
       # Example:
       #   @room.check_availability!(from: Date.today, to: Date.tomorrow, amount: 2)
-      def check_availability!(opts)
+      def check_availability!(**opts)
         # validates options
         self.validate_booking_options!(opts)
 
@@ -249,7 +249,7 @@ module ActsAsBookable::Bookable
       #
       # Example:
       #   @room.check_availability!(from: Date.today, to: Date.tomorrow, amount: 2)
-      def check_availability(opts)
+      def check_availability(**opts)
         begin
           check_availability!(opts)
         rescue ActsAsBookable::AvailabilityError
@@ -266,7 +266,7 @@ module ActsAsBookable::Bookable
       #
       # Example:
       #   @room.be_booked!(@user, from: Date.today, to: Date.tomorrow, amount: 2)
-      def be_booked!(booker, opts={})
+      def be_booked!(booker, **opts)
         booker.book!(self, opts)
       end
 
@@ -276,7 +276,7 @@ module ActsAsBookable::Bookable
       # @raise ActsAsBookable::OptionsInvalid if options are not valid
       # @param opts The booking options
       #
-      def validate_booking_options!(opts)
+      def validate_booking_options!(**opts)
         self.class.validate_booking_options!(opts)
       end
 

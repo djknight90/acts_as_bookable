@@ -12,20 +12,20 @@ module ActsAsBookable
     #   class Room < ActiveRecord::Base
     #     acts_as_bookable
     #   end
-    def acts_as_bookable(options={})
-      bookable(options)
+    def acts_as_bookable(**opts)
+      bookable(**opts)
     end
 
     private
 
     # Make a model bookable
-    def bookable(options)
+    def bookable(**opts)
 
       if bookable?
-        self.booking_opts = options
+        self.booking_opts = opts
       else
         class_attribute :booking_opts
-        self.booking_opts = options
+        self.booking_opts = opts
 
         class_eval do
           serialize :schedule, IceCube::Schedule
