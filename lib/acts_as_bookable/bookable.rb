@@ -6,7 +6,7 @@ module ActsAsBookable
     end
 
     module ClassMethods
-      def acts_as_bookable(**opts)
+      def acts_as_bookable_RENAMED(**opts)
         bookable(**opts)
       end
 
